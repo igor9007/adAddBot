@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <script src="jquery-3.6.0.min.js"></script>
+  <script src="telegram-web-app.js"></script>
+ </head>
+ <body>
+  <div class="btn">
+   <p>Ad link</p>
+  </div>
+  <script>
+   let userId, responsePath, flowxoHook
+   let blinkAnimation = () => {
+    $(".btn").fadeOut(1000)
+    $(".btn").fadeIn(1000)
+   }
+   setInterval(blinkAnimation, 2000)
+   window.onload = () => {
+    let query = window.location.search.substring(1)
+    if (query) {
+     let searchLang = query.indexOf('lang=')
+     if (searchLang != -1) {
+      let searchResponsePath = query.indexOf('response_path=')
+      responsePath = query.slice(searchResponsePath + 14, searchLang)
+      flowxoHook = query.indexOf('flowxo_hook=')
+      flowxoHook = query.slice(flowxoHook + 12, searchResponsePath - 1)
+      userId = 'testUserId'
+      alert(responsePath, flowxoHook, query)
+     }
+    }
+    $('.btn').on("click",() => {
+      if (window.Telegram.WebApp.headerColor) {
+       $.ajax(`https://flowxo.com/hooks/a/${flowxoHook}?response_path=${responsePath}&userId=${userId}`).always(() => {
+        window.Telegram.WebApp.close()
+       })
+      }
+    })
+   }
+  </script>
+  <style>   
+   body {padding-top:50%}
+   .btn {
+    margin: auto;
+    width: 50%;
+    min-width: 200px;
+    padding: 10px 0;
+    text-align: center;
+    background: grey;
+    border-radius: 20px;
+   }
+  </style>
+ </body>
+</html>
