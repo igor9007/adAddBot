@@ -16,6 +16,7 @@
    }
    setInterval(blinkAnimation, 2000)
    window.onload = () => {
+    alert('User Id is: ' + window.localStorage.getItem('userId'))
     let query = window.location.search.substring(1)
     if (query) {
      let searchLang = query.indexOf('lang=')
@@ -25,10 +26,11 @@
       flowxoHook = query.indexOf('flowxo_hook=')
       flowxoHook = query.slice(flowxoHook + 12, searchResponsePath - 1)
       userId = 'testUserId'
-      alert(responsePath, flowxoHook, query)
      }
     }
     $('.btn').on("click",() => {
+      window.localStorage.setItem('userId', 'testUserId')
+      alert('test data has been set')
       if (window.Telegram.WebApp.headerColor) {
        $.ajax(`https://flowxo.com/hooks/a/${flowxoHook}?response_path=${responsePath}&userId=${userId}`).always(() => {
         window.Telegram.WebApp.close()
